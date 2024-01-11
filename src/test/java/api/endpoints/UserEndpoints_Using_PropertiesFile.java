@@ -1,5 +1,7 @@
 package api.endpoints;
 
+import java.util.ResourceBundle;
+
 import org.testng.ITestContext;
 
 import api.payload.UserPOJO;
@@ -8,13 +10,20 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class UserEndpoints {
+public class UserEndpoints_Using_PropertiesFile {
 	
 	public static RequestSpecification httpRequest;
 	
+	//this method creted URL from .properties file
+	public static ResourceBundle getURL()
+	{
+		ResourceBundle routes=ResourceBundle.getBundle("routes");  //load properties file routes.properties
+		return routes;
+	}
 	public static Response createUser(UserPOJO bodyData)
 	{
-		RestAssured.baseURI=Routes.postURL;
+		String postURL=getURL().getString("postURL");
+		RestAssured.baseURI=postURL;
 		httpRequest = RestAssured.given();
 		
 		httpRequest.body(bodyData.toString());
@@ -25,7 +34,8 @@ public class UserEndpoints {
 	
 	public static Response getUser(String id)
 	{
-		RestAssured.baseURI=Routes.getURL;
+		String getURL=getURL().getString("getURL");
+		RestAssured.baseURI=getURL;
 		httpRequest = RestAssured.given();
 		
 		httpRequest.header("Content-Type","application/json");
@@ -38,7 +48,9 @@ public class UserEndpoints {
 	
 	public static Response updateUser(String id, UserPOJO bodyData)
 	{
-		RestAssured.baseURI=Routes.putURL;
+		String putURL=getURL().getString("putURL");
+
+		RestAssured.baseURI=putURL;
 		httpRequest = RestAssured.given();
 		
 		httpRequest.pathParam("id", id);
@@ -52,7 +64,8 @@ public class UserEndpoints {
 	}
 	public static Response deleteUser(String id)
 	{
-		RestAssured.baseURI=Routes.deleteURL;
+		String deleteURL=getURL().getString("deleteURL");
+		RestAssured.baseURI=deleteURL;
 		httpRequest = RestAssured.given();
 		
 		httpRequest.pathParam("id", id);

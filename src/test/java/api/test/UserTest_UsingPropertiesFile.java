@@ -8,11 +8,12 @@ import org.testng.annotations.Test;
 import com.github.javafaker.Faker;
 
 import api.endpoints.UserEndpoints;
+import api.endpoints.UserEndpoints_Using_PropertiesFile;
 import api.payload.UserPOJO;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 
-public class UserTest {
+public class UserTest_UsingPropertiesFile {
 	
 	Faker faker;
 	UserPOJO bodyData;
@@ -32,7 +33,7 @@ public class UserTest {
 	@Test(priority=1)
 	public void testCreateUser()
 	{
-		Response response = UserEndpoints.createUser(bodyData);
+		Response response = UserEndpoints_Using_PropertiesFile.createUser(bodyData);
 		response.then().log().all();
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(201, statusCode);
@@ -42,7 +43,7 @@ public class UserTest {
 	@Test(priority=2)
 	public void testGETUser()
 	{
-		Response response = UserEndpoints.getUser("2");
+		Response response = UserEndpoints_Using_PropertiesFile.getUser("2");
 		response.then().log().all();
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(200, statusCode);
@@ -53,7 +54,7 @@ public class UserTest {
 	{
 		bodyData.setName(faker.name().fullName());
 		bodyData.setJob(faker.job().position());
-		Response response = UserEndpoints.updateUser("2",bodyData);
+		Response response = UserEndpoints_Using_PropertiesFile.updateUser("2",bodyData);
 		response.then().log().all();
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(200, statusCode);
@@ -63,7 +64,7 @@ public class UserTest {
 	public void testDeleteUser()
 	{
 		
-		Response response = UserEndpoints.deleteUser("2");
+		Response response = UserEndpoints_Using_PropertiesFile.deleteUser("2");
 		response.then().log().all();
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(204, statusCode);
